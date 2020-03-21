@@ -20,6 +20,20 @@ def sidebar():
         if selectStats == 'Confirmed cases':
             df_confirmed_cases = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv', error_bad_lines=False)
             st.write(df_confirmed_cases)  # just printing df - later i want to produce a chart
+            del df_confirmed_cases['Province/State']
+            del df_confirmed_cases['Country/Region']
+            del df_confirmed_cases['Lat']
+            del df_confirmed_cases['Long']
+            x = list(df_confirmed_cases)
+            rec_number_thai = df_confirmed_cases.loc[[0]]
+            y = list(rec_number_thai)
+            p = figure(
+                title = 'line chart',
+                x_axis_label = 'Date',
+                y_axis_label = 'Number of persons'
+            )
+            p.line(x,y, line_width = 2)
+            st.bokeh_chart(p)
         if selectStats == 'Deaths':
             df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
             st.write(df_deaths)
