@@ -1,6 +1,8 @@
 import pandas as pd
 import streamlit as st
 import csv
+import numpy as np
+from bokeh.plotting import figure
 
 def main():
     st.title("Visualization of current Statistics regarding COVID-19")
@@ -17,8 +19,13 @@ def sidebar():
         selectStats = st.sidebar.selectbox('Choose the statistics you want to look at',('Confirmed cases', 'Deaths', 'Recovered'))
         if selectStats == 'Confirmed cases':
             df_confirmed_cases = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv', error_bad_lines=False)
-            st.markdown('Confirmed Cases')
-            st.dataframe(df_confirmed_cases)  # just printing df - later i want to produce a chart
+            st.write(df_confirmed_cases)  # just printing df - later i want to produce a chart
+        if selectStats == 'Deaths':
+            df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
+            st.write(df_deaths)
+        if selectStats == 'Recovered':
+            df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
+            st.write(df_recovered)
 
 def preparingDF(): # maybe no need for this method
     # I want to prepare the df in this method (delete rows,columns etc.)
