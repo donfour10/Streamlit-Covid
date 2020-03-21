@@ -25,14 +25,15 @@ def sidebar():
             del df_confirmed_cases['Lat']
             del df_confirmed_cases['Long']
             x = list(df_confirmed_cases)
-            rec_number_thai = df_confirmed_cases.loc[[0]]
+            rec_number_thai = df_confirmed_cases.iloc[0]
             y = list(rec_number_thai)
             p = figure(
                 title = 'line chart',
                 x_axis_label = 'Date',
-                y_axis_label = 'Number of persons'
+                y_axis_label = 'Number of persons',
+                x_range = x
             )
-            p.line(x,y, line_width = 2)
+            p.line(x,y, legend = 'Confirmed Cases' ,line_width = 2)
             st.bokeh_chart(p)
         if selectStats == 'Deaths':
             df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
