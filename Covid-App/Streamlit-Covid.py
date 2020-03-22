@@ -27,18 +27,18 @@ def sidebar():
         if ckb_cc:
             # st.write(df_confirmed_cases)  # just printing df - later i want to produce a chart
             y_cc = list(df_confirmed_cases.loc[:,'1/22/20':].iloc[0])
-            p.line(x,y_cc, legend = 'Confirmed Cases' ,line_width = 2)
+            p.line(x,y_cc, legend = 'confirmed Cases' ,line_width = 2)
 
         ckb_d = st.sidebar.checkbox('deaths')
         if ckb_d:
             # st.write(df_deaths)
             y_d = list(df_deaths.loc[:,'1/22/20':].iloc[0])
-            p.line(x, y_d, legend='deaths', line_width=2)
+            p.line(x, y_d, legend='deaths', line_width=2, color= 'red')
 
         ckb_r = st.sidebar.checkbox('recovered')
         if ckb_r:
             y_r = list(df_recovered.loc[:,'1/22/20':].iloc[0])
-            p.line(x, y_r, legend='recovered', line_width=2)
+            p.line(x, y_r, legend='recovered', line_width=2, color = 'green')
             # st.write(df_recovered)
         st.bokeh_chart(p)
 
