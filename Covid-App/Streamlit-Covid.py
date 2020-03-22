@@ -23,8 +23,6 @@ def sidebar():
             del df_confirmed_cases['Long']
             x = list(df_confirmed_cases)
             y = list(df_confirmed_cases.iloc[0])
-            st.write(x)
-            st.write(y)
             p = figure(
                 title = 'line chart',
                 x_axis_label = 'Date',
