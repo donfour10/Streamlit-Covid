@@ -18,6 +18,11 @@ def sidebar():
         df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
         countryList = df_confirmed_cases['Country/Region'].tolist()
         selectCountry = st.sidebar.selectbox('Please choose your Country/Region',countryList)
+        # provinceList = df_confirmed_cases.loc[df_confirmed_cases['Country/Region']== selectCountry]['Province/State'].tolist()
+        # if provinceList != [np.nan]:
+        #     selectProvince = st.sidebar.selectbox('Please choose your Province/State', provinceList)
+        # else:
+        #     selectProvince = 0
         x = list(df_confirmed_cases.loc[:,'1/22/20':])
         p = figure(
                 title = 'line chart',
