@@ -29,7 +29,6 @@ def sidebar():
             y = list(df_confirmed_cases.iloc[0])
             st.write(x)
             st.write(y)
-            
             p = figure(
                 title = 'line chart',
                 x_axis_label = 'Date',
@@ -44,14 +43,11 @@ def sidebar():
             st.write(df_deaths)
             x = [1, 2, 3, 4, 5]
             y = [6, 7, 2, 4, 5]
-            
             p = figure(
                 title='simple line example',
                 x_axis_label='x',
                 y_axis_label='y')
-                
             p.line(x, y, legend='Trend', line_width=2)
-            
             st.bokeh_chart(p)
         if selectStats == 'Recovered':
             df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
