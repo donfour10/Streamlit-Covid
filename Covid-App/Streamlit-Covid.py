@@ -16,6 +16,8 @@ def sidebar():
         df_confirmed_cases = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv', error_bad_lines=False)
         df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
         df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
+        countryList = df_confirmed_cases['Country/Region'].tolist()
+        selectCountry = st.sidebar.selectbox('Please choose your Country/Region',countryList)
         x = list(df_confirmed_cases.loc[:,'1/22/20':])
         p = figure(
                 title = 'line chart',
@@ -26,18 +28,18 @@ def sidebar():
         ckb_cc = st.sidebar.checkbox('cofirmed cases', value = True)
         if ckb_cc:
             # st.write(df_confirmed_cases)  # just printing df - later i want to produce a chart
-            y_cc = list(df_confirmed_cases.loc[:,'1/22/20':].iloc[0])
+            y_cc = list(df_confirmed_cases.loc[df_confirmed_cases['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
             p.line(x,y_cc, legend = 'confirmed Cases' ,line_width = 2)
 
         ckb_d = st.sidebar.checkbox('deaths')
         if ckb_d:
             # st.write(df_deaths)
-            y_d = list(df_deaths.loc[:,'1/22/20':].iloc[0])
+            y_d = list(df_deaths.loc[df_deaths['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
             p.line(x, y_d, legend='deaths', line_width=2, color= 'red')
 
         ckb_r = st.sidebar.checkbox('recovered')
         if ckb_r:
-            y_r = list(df_recovered.loc[:,'1/22/20':].iloc[0])
+            y_r = list(df_recovered.loc[df_deaths['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
             p.line(x, y_r, legend='recovered', line_width=2, color = 'green')
             # st.write(df_recovered)
         st.bokeh_chart(p)
