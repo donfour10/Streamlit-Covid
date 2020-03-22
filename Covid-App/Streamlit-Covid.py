@@ -10,10 +10,7 @@ def main():
     sidebar()
 
 def sidebar():
-    selectDataSource = st.sidebar.selectbox('Choose your preferred DataSource',('RKI','John Hopkins'))
-    if selectDataSource == 'RKI':
-        # load csv with RKI data
-        pass
+    selectDataSource = st.sidebar.selectbox('Choose your preferred DataSource',('-','John Hopkins'))
     if selectDataSource == 'John Hopkins':
         # load csv with CCSE Data
         selectStats = st.sidebar.selectbox('Choose the statistics you want to look at',('Confirmed cases', 'Deaths', 'Recovered'))
@@ -48,6 +45,7 @@ def sidebar():
                 y_axis_label='y')
             p.line(x, y, legend='Trend', line_width=2)
             st.bokeh_chart(p)
+
         if selectStats == 'Recovered':
             df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
             st.write(df_recovered)
