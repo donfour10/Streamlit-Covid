@@ -17,6 +17,7 @@ def sidebar():
         df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
         df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
         countryList = df_confirmed_cases['Country/Region'].tolist()
+        countryList = list(set(countryList))
         selectCountry = st.sidebar.selectbox('Please choose your Country/Region',countryList)
         provinceList = df_confirmed_cases.loc[df_confirmed_cases['Country/Region']== selectCountry]['Province/State'].tolist()
         if provinceList != [np.nan]:
