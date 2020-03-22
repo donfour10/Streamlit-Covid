@@ -25,19 +25,34 @@ def sidebar():
             del df_confirmed_cases['Lat']
             del df_confirmed_cases['Long']
             x = list(df_confirmed_cases)
-            rec_number_thai = df_confirmed_cases.iloc[0]
-            y = list(rec_number_thai)
+            #rec_number_thai = df_confirmed_cases.loc[0]
+            y = list(df_confirmed_cases.iloc[0])
+            st.write(x)
+            st.write(y)
+            
             p = figure(
                 title = 'line chart',
                 x_axis_label = 'Date',
-                y_axis_label = 'Number of persons',
-                x_range = x
+                x_range = x,
+                y_axis_label = 'Number of persons'
             )
             p.line(x,y, legend = 'Confirmed Cases' ,line_width = 2)
             st.bokeh_chart(p)
+
         if selectStats == 'Deaths':
             df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
             st.write(df_deaths)
+            x = [1, 2, 3, 4, 5]
+            y = [6, 7, 2, 4, 5]
+            
+            p = figure(
+                title='simple line example',
+                x_axis_label='x',
+                y_axis_label='y')
+                
+            p.line(x, y, legend='Trend', line_width=2)
+            
+            st.bokeh_chart(p)
         if selectStats == 'Recovered':
             df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
             st.write(df_recovered)
