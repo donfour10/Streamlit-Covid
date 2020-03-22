@@ -36,7 +36,7 @@ def sidebar():
                 x_range = x,
                 y_axis_label = 'Number of persons'
             )
-            p.line(x,y, line_width = 2)
+            p.line(x,y, legend = 'Confirmed Cases' ,line_width = 2)
             st.bokeh_chart(p)
 
         if selectStats == 'Deaths':
