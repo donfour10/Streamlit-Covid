@@ -13,40 +13,34 @@ def sidebar():
     selectDataSource = st.sidebar.selectbox('Choose your preferred DataSource',('-','John Hopkins'))
     if selectDataSource == 'John Hopkins':
         # load csv with CCSE Data
-        selectStats = st.sidebar.selectbox('Choose the statistics you want to look at',('Confirmed cases', 'Deaths', 'Recovered'))
-        if selectStats == 'Confirmed cases':
-            df_confirmed_cases = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv', error_bad_lines=False)
-            st.write(df_confirmed_cases)  # just printing df - later i want to produce a chart
-            del df_confirmed_cases['Province/State']
-            del df_confirmed_cases['Country/Region']
-            del df_confirmed_cases['Lat']
-            del df_confirmed_cases['Long']
-            x = list(df_confirmed_cases)
-            y = list(df_confirmed_cases.iloc[0])
-            p = figure(
+        df_confirmed_cases = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv', error_bad_lines=False)
+        df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
+        df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
+        x = list(df_confirmed_cases.loc[:,'1/22/20':])
+        p = figure(
                 title = 'line chart',
                 x_axis_label = 'Date',
                 x_range = x,
                 y_axis_label = 'Number of persons'
             )
-            p.line(x,y, legend = 'Confirmed Cases' ,line_width = 2)
-            st.bokeh_chart(p)
+        ckb_cc = st.sidebar.checkbox('cofirmed cases', value = True)
+        if ckb_cc:
+            # st.write(df_confirmed_cases)  # just printing df - later i want to produce a chart
+            y_cc = list(df_confirmed_cases.loc[:,'1/22/20':].iloc[0])
+            p.line(x,y_cc, legend = 'Confirmed Cases' ,line_width = 2)
 
-        if selectStats == 'Deaths':
-            df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
-            st.write(df_deaths)
-            x = [1, 2, 3, 4, 5]
-            y = [6, 7, 2, 4, 5]
-            p = figure(
-                title='simple line example',
-                x_axis_label='x',
-                y_axis_label='y')
-            p.line(x, y, legend='Trend', line_width=2)
-            st.bokeh_chart(p)
+        ckb_d = st.sidebar.checkbox('deaths')
+        if ckb_d:
+            # st.write(df_deaths)
+            y_d = list(df_deaths.loc[:,'1/22/20':].iloc[0])
+            p.line(x, y_d, legend='deaths', line_width=2)
 
-        if selectStats == 'Recovered':
-            df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
-            st.write(df_recovered)
+        ckb_r = st.sidebar.checkbox('recovered')
+        if ckb_r:
+            y_r = list(df_recovered.loc[:,'1/22/20':].iloc[0])
+            p.line(x, y_r, legend='recovered', line_width=2)
+            # st.write(df_recovered)
+        st.bokeh_chart(p)
 
 def preparingDF(): # maybe no need for this method
     # I want to prepare the df in this method (delete rows,columns etc.)
