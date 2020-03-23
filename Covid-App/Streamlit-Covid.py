@@ -4,7 +4,7 @@ import csv
 import numpy as np
 from bokeh.plotting import figure
 from bokeh.tile_providers import get_provider, Vendors
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def main():
     st.title("Visualization of current Statistics regarding COVID-19")
@@ -73,16 +73,11 @@ def sidebar():
             st.bokeh_chart(p)
         if selectVisualization == 'world map':
             # implemet world map visualization with circles to hover over
-            st.write('World Map is coming!')
-            # output_file("tile.html")
+            selectDate = st.sidebar.date_input('On which day would you like to see the map?', datetime.today()- timedelta(days=1))
             tile_provider = get_provider(Vendors.CARTODBPOSITRON)
-
             p = figure(x_range=(-17000000, 17000000),y_range=(-6000000, 8000000),
                     x_axis_type="mercator", y_axis_type="mercator")
             p.add_tile(tile_provider)
-
-            # p.circle()
-
             st.bokeh_chart(p)
 
 def preparingDF(): # maybe no need for this method
