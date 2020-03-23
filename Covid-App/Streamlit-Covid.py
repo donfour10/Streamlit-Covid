@@ -24,6 +24,7 @@ def sidebar():
             countryList.sort()
             selectCountry = st.sidebar.selectbox('Please choose your Country/Region',countryList)
             provinceList = df_confirmed_cases.loc[df_confirmed_cases['Country/Region']== selectCountry]['Province/State'].tolist()
+            provinceList.sort()
             if provinceList != [np.nan]:
                 province_available = True
                 selectProvince = st.sidebar.selectbox('Please choose your Province/State', provinceList)
