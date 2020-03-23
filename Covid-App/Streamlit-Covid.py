@@ -70,6 +70,7 @@ def sidebar():
             st.bokeh_chart(p)
         if selectVisualization == 'world map':
             # implemet world map visualization with circles to hover over
+            st.write('World Map is coming!')
 
 def preparingDF(): # maybe no need for this method
     # I want to prepare the df in this method (delete rows,columns etc.)
