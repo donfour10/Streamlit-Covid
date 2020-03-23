@@ -21,6 +21,7 @@ def sidebar():
         if selectVisualization == 'line chart':
             countryList = df_confirmed_cases['Country/Region'].tolist()
             countryList = list(set(countryList))
+            countryList.sort()
             selectCountry = st.sidebar.selectbox('Please choose your Country/Region',countryList)
             provinceList = df_confirmed_cases.loc[df_confirmed_cases['Country/Region']== selectCountry]['Province/State'].tolist()
             if provinceList != [np.nan]:
