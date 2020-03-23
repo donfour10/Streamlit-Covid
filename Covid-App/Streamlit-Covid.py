@@ -3,6 +3,7 @@ import streamlit as st
 import csv
 import numpy as np
 from bokeh.plotting import figure
+from datetime import datetime
 
 def main():
     st.title("Visualization of current Statistics regarding COVID-19")
@@ -25,11 +26,17 @@ def sidebar():
             selectProvince = st.sidebar.selectbox('Please choose your Province/State', provinceList)
         else:
             province_available = False
-        x = list(df_confirmed_cases.loc[:,'1/22/20':])
+        datestrList = list(df_confirmed_cases.loc[:,'1/22/20':])
+        x = []
+        for date in datestrList:
+            datetime_obj = datetime.strptime(date, '%m/%d/%y')
+            # datetime_obj = np.datetime64(datetime_obj)
+            x.append(datetime_obj)
         p = figure(
                 title = 'line chart',
                 x_axis_label = 'Date',
-                x_range = x,
+                x_axis_type = 'datetime',
+                # x_range = x,
                 y_axis_label = 'Number of persons'
             )
         ckb_cc = st.sidebar.checkbox('cofirmed cases', value = True)
@@ -39,9 +46,9 @@ def sidebar():
                 y_cc = list(df_confirmed_cases.loc[df_confirmed_cases['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
             else:
                 y_cc = list(df_confirmed_cases.loc[(df_confirmed_cases['Country/Region']==selectCountry) & (df_confirmed_cases['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
-            p.line(x,y_cc, legend = 'confirmed Cases' ,line_width = 2)
+            p.line(x,y_cc, legend = 'confirmed cases' ,line_width = 2)
 
-        ckb_d = st.sidebar.checkbox('deaths')
+        ckb_d = st.sidebar.checkbox('deaths', value= True)
         if ckb_d:
             # st.write(df_deaths)
             if province_available == False:
@@ -50,7 +57,7 @@ def sidebar():
                 y_d = list(df_deaths.loc[(df_deaths['Country/Region']==selectCountry) & (df_deaths['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
             p.line(x, y_d, legend='deaths', line_width=2, color= 'red')
 
-        ckb_r = st.sidebar.checkbox('recovered')
+        ckb_r = st.sidebar.checkbox('recovered', value = True)
         if ckb_r:
             if province_available == False:
                 y_r = list(df_recovered.loc[df_recovered['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
