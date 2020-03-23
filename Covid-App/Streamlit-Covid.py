@@ -3,6 +3,7 @@ import streamlit as st
 import csv
 import numpy as np
 from bokeh.plotting import figure
+from datetime import datetime
 
 def main():
     st.title("Visualization of current Statistics regarding COVID-19")
@@ -25,11 +26,17 @@ def sidebar():
             selectProvince = st.sidebar.selectbox('Please choose your Province/State', provinceList)
         else:
             province_available = False
-        x = list(df_confirmed_cases.loc[:,'1/22/20':])
+        datestrList = list(df_confirmed_cases.loc[:,'1/22/20':])
+        x = []
+        for date in datestrList:
+            datetime_obj = datetime.strptime(date, '%m/%d/%y')
+            # datetime_obj = np.datetime64(datetime_obj)
+            x.append(datetime_obj)
         p = figure(
                 title = 'line chart',
                 x_axis_label = 'Date',
-                x_range = x,
+                x_axis_type = 'datetime',
+                # x_range = x,
                 y_axis_label = 'Number of persons'
             )
         ckb_cc = st.sidebar.checkbox('cofirmed cases', value = True)
