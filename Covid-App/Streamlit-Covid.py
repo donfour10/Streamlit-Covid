@@ -16,13 +16,15 @@ def sidebar():
         # load csv with CCSE Data
         df_confirmed_cases = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv', error_bad_lines=False)
         df_deaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv', error_bad_lines=False)
-        df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
+        df_recovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv', error_bad_lines=False)
         selectVisualization = st.sidebar.selectbox('Which visualization do you want to look at?', ('-','line chart','world map'))
         if selectVisualization == 'line chart':
             countryList = df_confirmed_cases['Country/Region'].tolist()
             countryList = list(set(countryList))
+            countryList.sort()
             selectCountry = st.sidebar.selectbox('Please choose your Country/Region',countryList)
             provinceList = df_confirmed_cases.loc[df_confirmed_cases['Country/Region']== selectCountry]['Province/State'].tolist()
+            provinceList.sort()
             if provinceList != [np.nan]:
                 province_available = True
                 selectProvince = st.sidebar.selectbox('Please choose your Province/State', provinceList)
