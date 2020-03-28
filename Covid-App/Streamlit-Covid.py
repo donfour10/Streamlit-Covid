@@ -76,7 +76,7 @@ def sidebar():
             selectDate = st.sidebar.date_input('On which day would you like to see the map?', datetime.today()- timedelta(days=1))
             tile_provider = get_provider(Vendors.CARTODBPOSITRON)
             p = figure(x_range=(-17000000, 17000000),y_range=(-6000000, 8000000),
-                    x_axis_type="mercator", y_axis_type="mercator")
+                    x_axis_type="mercator", y_axis_type="mercator", plot_width= 800, plot_height= 400)
             p.add_tile(tile_provider)
             st.bokeh_chart(p)
 
