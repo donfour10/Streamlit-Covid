@@ -5,6 +5,7 @@ import numpy as np
 from bokeh.plotting import figure
 from bokeh.tile_providers import get_provider, Vendors
 from datetime import datetime, timedelta
+import math
 
 def main():
     st.title("Visualization of current Statistics regarding COVID-19")
@@ -78,6 +79,10 @@ def sidebar():
             p = figure(x_range=(-17000000, 17000000),y_range=(-6000000, 8000000),
                     x_axis_type="mercator", y_axis_type="mercator", plot_width= 800, plot_height= 400)
             p.add_tile(tile_provider)
+            # examples for afghanistan
+            x_merc = 6378137.0 * math.radians(65.0)
+            y_merc = math.log(math.tan(math.pi/4+math.radians(33.0)/2))*6378137.0
+            p.circle(x=x_merc, y=y_merc, size= 10, color='blue')
             st.bokeh_chart(p)
 
 def preparingDF(): # maybe no need for this method
