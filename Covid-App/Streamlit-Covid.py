@@ -12,6 +12,12 @@ def main():
     st.markdown('Developed by Dustin Werner & Fabian-Malte Möller #WeVSVirus')
     sidebar()
 
+def latlong2merc(lat, long):
+    radius = 6378137.0
+    x = math.radians(long)*radius
+    y = math.log(math.tan(math.pi/4+math.radians(lat)/2))*radius
+    return(x,y)
+
 def sidebar():
     selectDataSource = st.sidebar.selectbox('Choose your preferred DataSource',('-','John Hopkins'))
     if selectDataSource == 'John Hopkins':
@@ -80,8 +86,7 @@ def sidebar():
                     x_axis_type="mercator", y_axis_type="mercator", plot_width= 800, plot_height= 400)
             p.add_tile(tile_provider)
             # examples for afghanistan
-            x_merc = 6378137.0 * math.radians(65.0)
-            y_merc = math.log(math.tan(math.pi/4+math.radians(33.0)/2))*6378137.0
+            x_merc, y_merc = latlong2merc(33.0,65.0)
             p.circle(x=x_merc, y=y_merc, size= 10, color='blue')
             st.bokeh_chart(p)
 
