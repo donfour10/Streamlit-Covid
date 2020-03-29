@@ -85,9 +85,11 @@ def sidebar():
             p = figure(x_range=(-17000000, 17000000),y_range=(-6000000, 8000000),
                     x_axis_type="mercator", y_axis_type="mercator", plot_width= 800, plot_height= 400)
             p.add_tile(tile_provider)
-            # examples for afghanistan
-            x_merc, y_merc = latlong2merc(33.0,65.0)
-            p.circle(x=x_merc, y=y_merc, size= 10, color='blue')
+            for i in range(len(df_confirmed_cases)):
+                lat = df_confirmed_cases.at[i, 'Lat']
+                lon = df_confirmed_cases.at[i, 'Long']
+                x_merc, y_merc = latlong2merc(lat,lon)
+                p.circle(x=x_merc, y=y_merc, size= 10, color='blue')
             st.bokeh_chart(p)
 
 def preparingDF(): # maybe no need for this method
