@@ -32,12 +32,13 @@ def sidebar():
             countryList.sort()
             selectCountry = st.sidebar.selectbox('Please choose your Country/Region',countryList)
             provinceList = df_confirmed_cases.loc[df_confirmed_cases['Country/Region']== selectCountry]['Province/State'].tolist()
-            provinceList.sort()
-            # for province in provinceList:
-            #     if province == np.nan:
-            #         province = selectCountry
             if provinceList != [np.nan]:
                 province_available = True
+                provinceList = df_confirmed_cases.loc[df_confirmed_cases['Country/Region']== selectCountry].fillna(0)['Province/State'].tolist()
+                for i in range(len(provinceList)):
+                    if provinceList[i] == 0:
+                        provinceList[i] = selectCountry
+                provinceList.sort()
                 selectProvince = st.sidebar.selectbox('Please choose your Province/State', provinceList)
             else:
                 province_available = False
@@ -60,7 +61,11 @@ def sidebar():
                 if province_available == False:
                     y_cc = list(df_confirmed_cases.loc[df_confirmed_cases['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
                 else:
-                    y_cc = list(df_confirmed_cases.loc[(df_confirmed_cases['Country/Region']==selectCountry) & (df_confirmed_cases['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+                    if selectCountry == selectProvince:
+                        df_country_cc = df_confirmed_cases.loc[(df_confirmed_cases['Country/Region']==selectCountry)].fillna(selectCountry)
+                        y_cc = list(df_country_cc.loc[(df_country_cc['Country/Region']==selectCountry) & (df_country_cc['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+                    else:
+                        y_cc = list(df_confirmed_cases.loc[(df_confirmed_cases['Country/Region']==selectCountry) & (df_confirmed_cases['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
                 p.line(x,y_cc, legend = 'confirmed cases' ,line_width = 2)
 
             ckb_d = st.sidebar.checkbox('deaths', value= True)
@@ -69,17 +74,25 @@ def sidebar():
                 if province_available == False:
                     y_d = list(df_deaths.loc[df_deaths['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
                 else:
-                    y_d = list(df_deaths.loc[(df_deaths['Country/Region']==selectCountry) & (df_deaths['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+                    if selectCountry == selectProvince:
+                        df_country_d = df_deaths.loc[(df_deaths['Country/Region']==selectCountry)].fillna(selectCountry)
+                        y_d = list(df_country_d.loc[(df_country_d['Country/Region']==selectCountry) & (df_country_d['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+                    else:
+                        y_d = list(df_deaths.loc[(df_deaths['Country/Region']==selectCountry) & (df_deaths['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
                 p.line(x, y_d, legend='deaths', line_width=2, color= 'red')
-
-            ckb_r = st.sidebar.checkbox('recovered', value = True)
-            if ckb_r:
-                if province_available == False:
-                    y_r = list(df_recovered.loc[df_recovered['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
-                else:
-                    y_r = list(df_recovered.loc[(df_recovered['Country/Region']==selectCountry) & (df_recovered['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
-                p.line(x, y_r, legend='recovered', line_width=2, color = 'green')
-                # st.write(df_recovered)
+            if selectCountry != 'Canada':
+                ckb_r = st.sidebar.checkbox('recovered', value = True)
+                if ckb_r:
+                    if province_available == False:
+                        y_r = list(df_recovered.loc[df_recovered['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
+                    else:
+                        if selectCountry == selectProvince:
+                            df_country_r = df_recovered.loc[(df_recovered['Country/Region']==selectCountry)].fillna(selectCountry)
+                            y_r = list(df_country_r.loc[(df_country_r['Country/Region']==selectCountry) & (df_country_r['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+                        else:
+                            y_r = list(df_recovered.loc[(df_recovered['Country/Region']==selectCountry) & (df_recovered['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+                    p.line(x, y_r, legend='recovered', line_width=2, color = 'green')
+                    # st.write(df_recovered)
             st.bokeh_chart(p)
         if selectVisualization == 'world map':
             # implemet world map visualization with circles to hover over
