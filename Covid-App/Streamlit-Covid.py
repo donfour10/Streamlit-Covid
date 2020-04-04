@@ -80,19 +80,19 @@ def sidebar():
                     else:
                         y_d = list(df_deaths.loc[(df_deaths['Country/Region']==selectCountry) & (df_deaths['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
                 p.line(x, y_d, legend='deaths', line_width=2, color= 'red')
-
-            ckb_r = st.sidebar.checkbox('recovered', value = True)
-            if ckb_r:
-                if province_available == False:
-                    y_r = list(df_recovered.loc[df_recovered['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
-                else:
-                    if selectCountry == selectProvince:
-                        df_country_r = df_recovered.loc[(df_recovered['Country/Region']==selectCountry)].fillna(selectCountry)
-                        y_r = list(df_country_r.loc[(df_country_r['Country/Region']==selectCountry) & (df_country_r['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+            if selectCountry != 'Canada':
+                ckb_r = st.sidebar.checkbox('recovered', value = True)
+                if ckb_r:
+                    if province_available == False:
+                        y_r = list(df_recovered.loc[df_recovered['Country/Region']==selectCountry].loc[:,'1/22/20':].iloc[0])
                     else:
-                        y_r = list(df_recovered.loc[(df_recovered['Country/Region']==selectCountry) & (df_recovered['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
-                p.line(x, y_r, legend='recovered', line_width=2, color = 'green')
-                # st.write(df_recovered)
+                        if selectCountry == selectProvince:
+                            df_country_r = df_recovered.loc[(df_recovered['Country/Region']==selectCountry)].fillna(selectCountry)
+                            y_r = list(df_country_r.loc[(df_country_r['Country/Region']==selectCountry) & (df_country_r['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+                        else:
+                            y_r = list(df_recovered.loc[(df_recovered['Country/Region']==selectCountry) & (df_recovered['Province/State']==selectProvince)].loc[:,'1/22/20':].iloc[0])
+                    p.line(x, y_r, legend='recovered', line_width=2, color = 'green')
+                    # st.write(df_recovered)
             st.bokeh_chart(p)
         if selectVisualization == 'world map':
             # implemet world map visualization with circles to hover over
