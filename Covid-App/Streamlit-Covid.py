@@ -55,6 +55,7 @@ def sidebar():
                     # x_range = x,
                     y_axis_label = 'Number of persons'
                 )
+            p.left[0].formatter.use_scientific = False
             ckb_cc = st.sidebar.checkbox('cofirmed cases', value = True)
             if ckb_cc:
                 # st.write(df_confirmed_cases)  # just printing df - later i want to produce a chart
